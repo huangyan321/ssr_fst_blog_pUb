@@ -1,0 +1,38 @@
+version: '3'
+networks:
+  app-network:
+    driver: bridge
+services:
+  node:
+    image: nodejs
+    build:
+      context: .
+      dockerfile: node.dockerfile
+    ports:
+      - '8889:9000'
+    environment:
+      NODE_ENV: development
+    volumes:
+      - .:/home/app/ssr_fst_blog
+      - /home/app/ssr_fst_blog/node_modules
+    command: /bin/bash -c "npm run build:all && npm run startDev"
+    networks:
+      - app-network
+    links:
+      - mysql
+  mysql:
+    environment:
+      MYSQL_ROOT_PASSWORD: "175947"
+      MYSQL_DATABASE: db_myblog
+    ports:
+      - "3307:3306"
+    image: "mysql:latest"
+    hostname: "127.0.0.1"
+    restart: always
+    volumes:
+      - "C:/ProgramData/MySQL/MySQL Server 8.0/Data/db_myblog:/docker-entrypoint-initdb.d"
+    command: --default-authentication-plugin=mysql_native_password
+    networks:
+      - app-network
+
+
