@@ -10,6 +10,7 @@ VueRouter.prototype.push = function push(location) {
 export function createRouter() {
   const router = new VueRouter({
     mode: "history",
+    scrollBehavior: () => ({ y: 0 }),
     routes: [
       {
         path: "/",
@@ -19,19 +20,25 @@ export function createRouter() {
         path: "/main",
         redirect: "/main/postlist",
         component: () =>
-        import(/* webpackChunkName: "articlelist" */ "../views/postMain/index.vue"),
-        children:[
+          import(
+            /* webpackChunkName: "articlelist" */ "../views/postMain/index.vue"
+          ),
+        children: [
           {
             path: "postlist",
             component: () =>
-              import(/* webpackChunkName: "articlelist" */ "../views/postMain/list.vue"),
+              import(
+                /* webpackChunkName: "articlelist" */ "../views/postMain/list.vue"
+              ),
           },
           {
             path: "post/:id",
             component: () =>
-              import(/* webpackChunkName: "article" */ "../views/postMain/article.vue"),
+              import(
+                /* webpackChunkName: "article" */ "../views/postMain/article.vue"
+              ),
           },
-        ]
+        ],
       },
       {
         path: "/postfile",
@@ -52,7 +59,7 @@ export function createRouter() {
         path: "/demo",
         component: () =>
           import(/* webpackChunkName: "about" */ "../views/demo.vue"),
-      }
+      },
     ],
   });
   return router;
